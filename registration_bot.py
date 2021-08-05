@@ -112,9 +112,9 @@ def registration(message):
         # ваша заявка 'Имя пользователя'
         bot.send_message(chat_id, get_registration_data(user, 'Ваша заявка', message.from_user.first_name),
                          parse_mode="Markdown")
-        # # отправить в группу
-        bot.send_message(config.chat_id, get_registration_data(user, 'Заявка от бота', bot.get_me().username),
-                         parse_mode="Markdown")
+        # # # отправить в группу
+        # bot.send_message(config.chat_id, get_registration_data(user, 'Заявка от бота', bot.get_me().username),
+        #                  parse_mode="Markdown")
 
     except Exception as e:
         bot.reply_to(message, 'Что-то пошло не так!')
