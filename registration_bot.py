@@ -37,7 +37,7 @@ def welcome(message):
 @bot.message_handler(commands=['about'])
 def send_about(message):
     bot.send_message(message.chat.id, 'Мы компания Vies.Tech.'
-                                      'Мы занимаемся WEB-разработкой под ключ:'
+                                      'Мы занимаемся WEB-разработкой под ключ: '
                                       'разработка сайтов, приложений, CRM-систем')
 
 
@@ -109,40 +109,21 @@ def registration(message):
         user = user_dict[chat_id]
         user.site = message.text
 
-        # ваша заявка 'Имя пользователя'
-        bot.send_message(chat_id, get_registration_data(user, 'Ваша заявка', message.from_user.first_name),
+        # показ сформированной заявки пользователю
+        bot.send_message(chat_id, get_registration_data(user, 'Ваша заявка,', message.from_user.first_name),
                          parse_mode="Markdown")
-        # # # отправить в группу
-        # bot.send_message(config.chat_id, get_registration_data(user, 'Заявка от бота', bot.get_me().username),
-        #                  parse_mode="Markdown")
+
+        # отправить в группу
+        bot.send_message(config.CHAT_ID, get_registration_data(user, 'Заявка от бота,', bot.get_me().username),
+                         parse_mode="Markdown")
 
     except Exception as e:
         bot.reply_to(message, 'Что-то пошло не так!')
 
 
 def get_registration_data(user, title, name):
-    t = Template(
-        '$title *$name*\n Город: *$userCity*\n ФИО: *$fullname*\n Телефон: *$phone*\n Выбранный сайт: *$site*'
-    )
-
-    return t.substitute({
-        'title': title,
-        'name': name,
-        'userCity': user.city,
-        'fullname': user.fullname,
-        'phone': user.phone,
-        'site': user.site,
-    })
-
-
-# Enable saving next step handlers to file "./.handlers-saves/step.save".
-# Delay=2 means that after any change in next step handlers (e.g. calling register_next_step_handler())
-# saving will hapen after delay 2 seconds.
-bot.enable_save_next_step_handlers(delay=2)
-
-# Load next_step_handlers from save file (default "./.handlers-saves/step.save")
-# WARNING It will work only if enable_save_next_step_handlers was called!
-bot.load_next_step_handlers()
+    return f'Ваша заявка, {name}\n Город: {user.city}\n ФИО: {user.fullname}\n ' \
+           f'Телефон: {user.phone}\n Выбранный сайт: {user.site}'
 
 
 if __name__ == '__main__':
